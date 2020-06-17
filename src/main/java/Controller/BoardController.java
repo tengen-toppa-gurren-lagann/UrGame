@@ -328,7 +328,17 @@ public class BoardController {
                 }
                 if (moveMade) { // Ход сделан
                     rollDiceButton.setText(diceInitStr);
-                    curPhase=4;
+                    try {
+                        if (board.getCell(cellToMakeMoveRow,cellToMakeMoveCol) == UrBoard.CellType.Rosette) { // Перешли на поле-розетку, поэтому нет перехода хода
+                            curPhase=0;
+                        }
+                        else {
+                            curPhase=4;
+                        }
+                    }
+                    catch (IndexOutOfBoundsException e) { // Фишка вышла с доски -> переход хода
+                        curPhase=4;
+                    }
                     clickedChip=null;
                     drawBoard();
                 }
@@ -367,7 +377,17 @@ public class BoardController {
                 }
                 if (moveMade) { // Ход сделан
                     rollDiceButton.setText(diceInitStr);
-                    curPhase=0;
+                    try {
+                        if (board.getCell(cellToMakeMoveRow,cellToMakeMoveCol) == UrBoard.CellType.Rosette) { // Перешли на поле-розетку, поэтому нет перехода хода
+                            curPhase=4;
+                        }
+                        else {
+                            curPhase=0;
+                        }
+                    }
+                    catch (IndexOutOfBoundsException e) { // Фишка вышла с доски -> переход хода
+                        curPhase=0;
+                    }
                     clickedChip=null;
                     drawBoard();
                 }

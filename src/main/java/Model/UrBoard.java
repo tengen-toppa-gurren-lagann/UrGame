@@ -12,12 +12,7 @@ public class UrBoard { // Доска для игры в Ур
     private CellType[][] grid = new CellType[height][width]; // Поля доски
 
     public CellType getCell(int row, int col) {
-        try {
-            return grid[row][col];
-        }
-        catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+       return grid[row][col];
     }
 
     public final int chipsTotalNum = 7; // Общее количество фишек каждого цвета
@@ -220,13 +215,17 @@ public class UrBoard { // Доска для игры в Ур
                 // Поле занято фишкой того же цвета, передвинуть нельзя
                 return 1;
             }
-            if (oppositeChips[j].getRow() == newRow && oppositeChips[j].getCol() == newCol) {
-                // Поле занято фишкой другого цвета - можно сбросить ее и перейти на это поле
-                if (!justCheck) {
-                    oppositeChips[j].throwOff();
-                    chip.moveTo(newRow, newCol);
+            if (oppositeChips[j].getRow() == newRow && oppositeChips[j].getCol() == newCol) { // Поле занято фишкой другого цвета
+                if (getCell(newRow,newCol) == CellType.Rosette) { // Чужая фишка стоит на "розетке" -> сбросить нельзя
+                    return 1;
                 }
-                return 2;
+                else {
+                    if (!justCheck) {
+                        oppositeChips[j].throwOff();
+                        chip.moveTo(newRow, newCol);
+                    }
+                    return 2;
+                }
             }
         }
         if (!justCheck) {
