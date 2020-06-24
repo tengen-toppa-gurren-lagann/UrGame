@@ -1,3 +1,3 @@
 package Model;
 
-public enum ChipColor {Black, White}
+public enum ChipColor {BLACK, WHITE}

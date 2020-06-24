@@ -3,8 +3,8 @@ package Model;
 public class Chip { // Фишка
 
     private ChipColor color; // Цвет фишки
-    private Integer col =-1; // Позиция на доске по горизонтали (-1->на руке, -2->вышла)
-    private Integer row =-1; // Позиция на доске по вертикали (-1->на руке, -2->вышла )
+    private int col =-1; // Позиция на доске по горизонтали (-1->на руке, -2->вышла)
+    private int row =-1; // Позиция на доске по вертикали (-1->на руке, -2->вышла )
     private boolean isOnBoard=false; // Находится на доске (м.б. потом уберем за не надобностью, т.к. если не на доске, то позиция (-1,-1)
     private boolean isOut=false; // Вышла из игры (м.б. потом уберем за не надобностью, т.к. если не на доске, то позиция (-2,-2)
 
@@ -31,8 +31,8 @@ public class Chip { // Фишка
 
     }
 
-    public Integer getRow() { return row; }
-    public Integer getCol() { return col; }
+    public int getRow() { return row; }
+    public int getCol() { return col; }
 
     public boolean isOut() { return isOut; }
     public boolean isOnHand() { return (!isOnBoard && !isOut); }

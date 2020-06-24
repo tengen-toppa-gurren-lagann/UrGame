@@ -5,10 +5,10 @@ import javafx.util.Pair;
 import java.util.ArrayList;
 
 public class UrBoard { // Доска для игры в Ур
-    public enum CellType {Ordinary, Rosette, None} // Тип поля - обычное, розетка или нет поля (вырез в доске)
+    public enum CellType {ORDINARY, ROSETTE, NONE} // Тип поля - обычное, розетка или нет поля (вырез в доске)
 
-    final int width = 8;  // Количество полей по горизонтали
-    final int height = 3; // Количество полей по вертикали
+    private final int width = 8;  // Количество полей по горизонтали
+    private final int height = 3; // Количество полей по вертикали
     private CellType[][] grid = new CellType[height][width]; // Поля доски
 
     public CellType getCell(int row, int col) {
@@ -18,54 +18,48 @@ public class UrBoard { // Доска для игры в Ур
     public final int chipsTotalNum = 7; // Общее количество фишек каждого цвета
     private Chip[] whiteChips = new Chip[chipsTotalNum];
     private Chip[] blackChips = new Chip[chipsTotalNum];
-    public Chip[] getWhiteChips() {
-        return whiteChips;
-    }
-    public Chip[] getBlackChips() {
-        return blackChips;
+
+    public Chip[] getChips(ChipColor color) {
+        if (color == ChipColor.BLACK) {
+            return blackChips;
+        } else return whiteChips;
     }
 
-    public Integer getWhitesOnHandCnt() {
+    public Integer getChipsOnHandCnt(ChipColor color) {
         int n=0;
-        for (int i=0; i<chipsTotalNum; i++) {
-            if (whiteChips[i].isOnHand()) n++;
-        }
-        return n;
-    }
-    public Integer getBlacksOnHandCnt() {
-        int n=0;
-        for (int i=0; i<chipsTotalNum; i++) {
-            if (blackChips[i].isOnHand()) n++;
-        }
+        if (color == ChipColor.BLACK) {
+            for (int i=0; i<chipsTotalNum; i++) {
+                if (blackChips[i].isOnHand()) n++;
+            }
+        } else
+            for (int i=0; i<chipsTotalNum; i++) {
+                if (whiteChips[i].isOnHand()) n++;
+            }
         return n;
     }
 
-    public Chip getWhiteChipFromHand() { // Получить белую фишку с руки
-        for (int i=0; i<chipsTotalNum; i++) {
-            if (whiteChips[i].isOnHand()) return whiteChips[i];
-        }
+    public Chip getChipFromHand(ChipColor color) { // Получить фишку с руки
+        if (color == ChipColor.BLACK) {
+            for (int i = 0; i < chipsTotalNum; i++) {
+                if (blackChips[i].isOnHand()) return blackChips[i];
+            }
+        } else
+            for (int i=0; i<chipsTotalNum; i++) {
+                if (whiteChips[i].isOnHand()) return whiteChips[i];
+            }
         return null;
     }
 
-    public Chip getBlackChipFromHand() { // Получить черную фишку с руки
-        for (int i=0; i<chipsTotalNum; i++) {
-            if (blackChips[i].isOnHand()) return blackChips[i];
-        }
-        return null;
-    }
-
-    public Integer getWhitesOutCnt() { // Сколько белых фишек вышло из игры (понадобится для определения победителя)
-        int n=0;
-        for (int i=0; i<chipsTotalNum; i++) {
-            if (whiteChips[i].isOut()) n++;
-        }
-        return n;
-    }
-    public Integer getBlacksOutCnt() { // Сколько черных фишек вышло из игры (понадобится для определения победителя)
-        int n=0;
-        for (int i=0; i<chipsTotalNum; i++) {
-            if (blackChips[i].isOut()) n++;
-        }
+    public Integer getChipsOutCnt(ChipColor color) {
+        int n = 0;
+        if (color == ChipColor.BLACK) {
+            for (int i = 0; i < chipsTotalNum; i++) {
+                if (blackChips[i].isOut()) n++;
+            }
+        } else
+            for (int i = 0; i < chipsTotalNum; i++) {
+                if (whiteChips[i].isOut()) n++;
+            }
         return n;
     }
 
@@ -102,21 +96,25 @@ public class UrBoard { // Доска для игры в Ур
     }
 
     private int diceNum = 0;
-    public int getDiceNum() { return diceNum; }
-    public void setDiceNum(int num) { diceNum = num; }
+    public int getDiceNum() {
+        return diceNum;
+    }
+    public void setDiceNum(int num) {
+        diceNum = num;
+    }
 
-    private ArrayList<Pair<Integer, Integer>> whitesRoute = new ArrayList<Pair<Integer, Integer>>(); // Путь белых фишек
-    private ArrayList<Pair<Integer, Integer>> blacksRoute = new ArrayList<Pair<Integer, Integer>>(); // Путь черных фишек
+    private ArrayList<Pair<Integer, Integer>> whitesRoute = new ArrayList<>(); // Путь белых фишек
+    private ArrayList<Pair<Integer, Integer>> blacksRoute = new ArrayList<>(); // Путь черных фишек
 
     public UrBoard() {
         // Инициализируем поля доски
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                grid[i][j] = CellType.Ordinary;
+                grid[i][j] = CellType.ORDINARY;
             }
         }
-        grid[0][0] = grid[0][6] = grid[1][3] = grid[2][0] = grid[2][6] = CellType.Rosette; // Поля-розетки
-        grid[0][4] = grid[0][5] = grid[2][4] = grid[2][5] = CellType.None; // Поля, которых нет (вырезы на доске)
+        grid[0][0] = grid[0][6] = grid[1][3] = grid[2][0] = grid[2][6] = CellType.ROSETTE; // Поля-розетки
+        grid[0][4] = grid[0][5] = grid[2][4] = grid[2][5] = CellType.NONE; // Поля, которых нет (вырезы на доске)
 
         // Заполняем "путь белых"
         whitesRoute.add(new Pair<>(-1, -1));
@@ -156,8 +154,8 @@ public class UrBoard { // Доска для игры в Ур
 
         // Инициализируем фишки
         for (int i = 0; i < chipsTotalNum; i++) {
-            whiteChips[i] = new Chip(ChipColor.White);
-            blackChips[i] = new Chip(ChipColor.Black);
+            whiteChips[i] = new Chip(ChipColor.WHITE);
+            blackChips[i] = new Chip(ChipColor.BLACK);
         }
 //        whiteChips[0].moveTo(0,6); // Для проверки отрисовки
 //        blackChips[0].moveTo(2,7); // Для проверки отрисовки
@@ -167,7 +165,7 @@ public class UrBoard { // Доска для игры в Ур
 
     private Pair<Integer,Integer> getNewPosition(Chip chip, int n) { // Получить новую позицию при перемещении фишки на n клеток
         ArrayList<Pair<Integer, Integer>> route;
-        if (chip.getColor() == ChipColor.White) {
+        if (chip.getColor() == ChipColor.WHITE) {
             route = whitesRoute;
         } else {
             route = blacksRoute;
@@ -188,7 +186,7 @@ public class UrBoard { // Доска для игры в Ур
     public int moveChipOrCheck(Chip chip, int n, boolean justCheck) {   // Передвинуть фишку на n клеток или проверить, можно ли передвинуть
                                                                         // Возврат: 0-можно передвинуть; 1-нельзя передвинуть, т.к. поле занято фишкой своего цвета; 2-можно передвинуть, сбросив фишку противника; 3-можно передвинуть, выйдет с доски; -1-нельзя передвинуть, т.к. выйдет за пределы возможных позиций
         Chip[] chips, oppositeChips;
-        if (chip.getColor() == ChipColor.White) {
+        if (chip.getColor() == ChipColor.WHITE) {
             chips = whiteChips;
             oppositeChips = blackChips;
         } else {
@@ -216,7 +214,7 @@ public class UrBoard { // Доска для игры в Ур
                 return 1;
             }
             if (oppositeChips[j].getRow() == newRow && oppositeChips[j].getCol() == newCol) { // Поле занято фишкой другого цвета
-                if (getCell(newRow,newCol) == CellType.Rosette) { // Чужая фишка стоит на "розетке" -> сбросить нельзя
+                if (getCell(newRow,newCol) == CellType.ROSETTE) { // Чужая фишка стоит на "розетке" -> сбросить нельзя
                     return 1;
                 }
                 else {

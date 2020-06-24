@@ -38,10 +38,10 @@ class UrBoardTest {
     @Test
     void getWhiteChips() {
         boolean allWhite=true; // Все ли фишки белые?
-        Chip[] chips = board.getWhiteChips();
+        Chip[] chips = board.getChips(ChipColor.WHITE);
         assertEquals(board.chipsTotalNum, chips.length); // Получили ли все фишки?
         for (int i=0; i<board.chipsTotalNum; i++) {
-            if (chips[i].getColor()==ChipColor.Black) {
+            if (chips[i].getColor()==ChipColor.BLACK) {
                 allWhite=false;
             }
         }
@@ -51,10 +51,10 @@ class UrBoardTest {
     @Test
     void getBlackChips() {
         boolean allBlack=true; // Все ли фишки черные?
-        Chip[] chips = board.getBlackChips();
+        Chip[] chips = board.getChips(ChipColor.BLACK);
         assertEquals(board.chipsTotalNum, chips.length); // Получили ли все фишки?
         for (int i=0; i<board.chipsTotalNum; i++) {
-            if (chips[i].getColor()==ChipColor.White) {
+            if (chips[i].getColor()==ChipColor.WHITE) {
                 allBlack=false;
             }
         }
@@ -63,89 +63,89 @@ class UrBoardTest {
 
     @Test
     void getWhitesOnHandCnt() {
-        Chip[] chips = board.getWhiteChips();
-        assertEquals(board.chipsTotalNum, board.getWhitesOnHandCnt()); // Сначала все фишки на руке
+        Chip[] chips = board.getChips(ChipColor.WHITE);
+        assertEquals(board.chipsTotalNum, board.getChipsOnHandCnt(ChipColor.WHITE)); // Сначала все фишки на руке
         board.moveChipOrCheck(chips[0],1,false); // Переместим на доску одну фишку
-        assertEquals(board.chipsTotalNum-1, board.getWhitesOnHandCnt()); // На руке должно стать на одну меньше
+        assertEquals(board.chipsTotalNum-1, board.getChipsOnHandCnt(ChipColor.WHITE)); // На руке должно стать на одну меньше
         for (int i=0;i<board.chipsTotalNum; i++) { // Переместим на доску все фишки
             chips[i].moveTo(1,1);
         }
-        assertEquals(0, board.getWhitesOnHandCnt()); // На руке должно остаться 0
+        assertEquals(0, board.getChipsOnHandCnt(ChipColor.WHITE)); // На руке должно остаться 0
     }
 
     @Test
     void getBlacksOnHandCnt() {
-        Chip[] chips = board.getBlackChips();
-        assertEquals(board.chipsTotalNum, board.getBlacksOnHandCnt()); // Сначала все фишки на руке
+        Chip[] chips = board.getChips(ChipColor.BLACK);
+        assertEquals(board.chipsTotalNum, board.getChipsOnHandCnt(ChipColor.BLACK)); // Сначала все фишки на руке
         board.moveChipOrCheck(chips[0],1,false); // Переместим на доску одну фишку
-        assertEquals(board.chipsTotalNum-1, board.getBlacksOnHandCnt()); // На руке должно стать на одну меньше
+        assertEquals(board.chipsTotalNum-1, board.getChipsOnHandCnt(ChipColor.BLACK)); // На руке должно стать на одну меньше
         for (int i=0;i<board.chipsTotalNum; i++) { // Переместим на доску все фишки
             chips[i].moveTo(1,1);
         }
-        assertEquals(0, board.getBlacksOnHandCnt()); // На руке должно остаться 0
+        assertEquals(0, board.getChipsOnHandCnt(ChipColor.BLACK)); // На руке должно остаться 0
     }
 
     @Test
     void getWhiteChipFromHand() {
-        Chip chip = board.getWhiteChipFromHand(); // Сначала все фишки на руке
+        Chip chip = board.getChipFromHand(ChipColor.WHITE); // Сначала все фишки на руке
         assertNotNull(chip);
-        Chip[] chips = board.getWhiteChips();
+        Chip[] chips = board.getChips(ChipColor.WHITE);
         for (int i=0;i<board.chipsTotalNum; i++) { // Переместим на доску все фишки
             chips[i].moveTo(1,1);
         }
-        chip = board.getWhiteChipFromHand(); // На руке фишек нет
+        chip = board.getChipFromHand(ChipColor.WHITE); // На руке фишек нет
         assertNull(chip);
     }
 
     @Test
     void getBlackChipFromHand() {
-        Chip chip = board.getBlackChipFromHand(); // Сначала все фишки на руке
+        Chip chip = board.getChipFromHand(ChipColor.BLACK); // Сначала все фишки на руке
         assertNotNull(chip);
-        Chip[] chips = board.getBlackChips();
+        Chip[] chips = board.getChips(ChipColor.BLACK);
         for (int i=0;i<board.chipsTotalNum; i++) { // Переместим на доску все фишки
             chips[i].moveTo(1,1);
         }
-        chip = board.getBlackChipFromHand(); // На руке фишек нет
+        chip = board.getChipFromHand(ChipColor.BLACK); // На руке фишек нет
         assertNull(chip);
     }
 
     @Test
     void getWhitesOutCnt() {
-        Chip[] chips = board.getWhiteChips(); // Сначала все фишки на руке
-        assertEquals(0,board.getWhitesOutCnt());
+        Chip[] chips = board.getChips(ChipColor.WHITE); // Сначала все фишки на руке
+        assertEquals(0,board.getChipsOutCnt(ChipColor.WHITE));
         for (int i=0;i<board.chipsTotalNum; i++) { // Переместим на доску все фишки
             chips[i].moveTo(1,1);
         }
-        assertEquals(0,board.getWhitesOutCnt());
+        assertEquals(0,board.getChipsOutCnt(ChipColor.WHITE));
         chips[0].moveOut(); // Выведем с доски одну
-        assertEquals(1,board.getWhitesOutCnt());
+        assertEquals(1,board.getChipsOutCnt(ChipColor.WHITE));
         for (int i=0;i<board.chipsTotalNum; i++) { // Выведем с доски все фишки
             chips[i].moveOut();
         }
-        assertEquals(board.chipsTotalNum,board.getWhitesOutCnt());
+        assertEquals(board.chipsTotalNum,board.getChipsOutCnt(ChipColor.WHITE));
     }
 
     @Test
     void getBlacksOutCnt() {
-        Chip[] chips = board.getBlackChips(); // Сначала все фишки на руке
-        assertEquals(0,board.getBlacksOutCnt());
+        Chip[] chips = board.getChips(ChipColor.BLACK); // Сначала все фишки на руке
+        assertEquals(0,board.getChipsOutCnt(ChipColor.BLACK));
         for (int i=0;i<board.chipsTotalNum; i++) { // Переместим на доску все фишки
             chips[i].moveTo(1,1);
         }
-        assertEquals(0,board.getBlacksOutCnt());
+        assertEquals(0,board.getChipsOutCnt(ChipColor.BLACK));
         chips[0].moveOut(); // Выведем с доски одну
-        assertEquals(1,board.getBlacksOutCnt());
+        assertEquals(1,board.getChipsOutCnt(ChipColor.BLACK));
         for (int i=0;i<board.chipsTotalNum; i++) { // Выведем с доски все фишки
             chips[i].moveOut();
         }
-        assertEquals(board.chipsTotalNum,board.getBlacksOutCnt());
+        assertEquals(board.chipsTotalNum,board.getChipsOutCnt(ChipColor.BLACK));
     }
 
     @Test
     void getCellForMoveChip() {
         Pair<Integer,Integer> pos;
-        Chip[] wChips = board.getWhiteChips();
-        Chip[] bChips = board.getBlackChips();
+        Chip[] wChips = board.getChips(ChipColor.WHITE);
+        Chip[] bChips = board.getChips(ChipColor.BLACK);
         pos = board.getCellForMoveChip(null);
         assertEquals(new Pair(-1,-1), pos);
 
@@ -239,8 +239,8 @@ class UrBoardTest {
 
     @Test
     void moveIsPossible() {
-        Chip[] wChips = board.getWhiteChips(); // Сначала все фишки на руке
-        Chip[] bChips = board.getBlackChips(); // Сначала все фишки на руке
+        Chip[] wChips = board.getChips(ChipColor.WHITE); // Сначала все фишки на руке
+        Chip[] bChips = board.getChips(ChipColor.BLACK); // Сначала все фишки на руке
         board.setDiceNum(1);
         assertTrue(board.moveIsPossible(wChips));
         assertTrue(board.moveIsPossible(bChips));
@@ -276,8 +276,8 @@ class UrBoardTest {
 
     @Test
     void moveChipOrCheck() {
-        Chip[] wChips = board.getWhiteChips(); // Сначала все фишки на руке
-        Chip[] bChips = board.getBlackChips(); // Сначала все фишки на руке
+        Chip[] wChips = board.getChips(ChipColor.WHITE); // Сначала все фишки на руке
+        Chip[] bChips = board.getChips(ChipColor.BLACK); // Сначала все фишки на руке
 
         int r=board.moveChipOrCheck(wChips[0],1,true); // Проверяем ход (не перемещаем фишку)
         assertEquals(0,r); // Проверяем, что можно передвинуть

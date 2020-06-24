@@ -8,7 +8,7 @@ class ChipTest {
 
     @Test
     void moveTo() {
-        Chip chip = new Chip(ChipColor.White);
+        Chip chip = new Chip(ChipColor.WHITE);
         int row=1;
         int col=3;
         chip.moveTo(row,col);
@@ -20,7 +20,7 @@ class ChipTest {
 
     @Test
     void isOut() {
-        Chip chip = new Chip(ChipColor.Black);
+        Chip chip = new Chip(ChipColor.BLACK);
         chip.moveOut();
         assertTrue(chip.isOut());
         assertFalse(chip.isOnHand());
@@ -34,7 +34,7 @@ class ChipTest {
 
     @Test
     void isOnHand() {
-        Chip chip = new Chip(ChipColor.White);
+        Chip chip = new Chip(ChipColor.WHITE);
         chip.throwOff();
         assertTrue(chip.isOnHand());
         assertFalse(chip.isOut());
@@ -50,7 +50,7 @@ class ChipTest {
 
     @Test
     void moveOut() {
-        Chip chip = new Chip(ChipColor.Black);
+        Chip chip = new Chip(ChipColor.BLACK);
         chip.moveOut();
         assertTrue(chip.isOut());
         assertFalse(chip.isOnHand());
@@ -62,7 +62,7 @@ class ChipTest {
 
     @Test
     void throwOff() {
-        Chip chip = new Chip(ChipColor.Black);
+        Chip chip = new Chip(ChipColor.BLACK);
         chip.throwOff();
         assertTrue(chip.isOnHand());
         assertFalse(chip.isOut());

@@ -1,5 +1,7 @@
 package Controller;
 
+import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,6 +12,8 @@ import java.io.IOException;
 import static javafx.stage.Modality.APPLICATION_MODAL;
 
 public class StartController {
+    private String linkToVideoStr="https://www.youtube.com/watch?v=WZskjLq040I";
+
     private Stage mainStage;
     public void setMainStage(Stage stage) {
         this.mainStage = stage;
@@ -49,5 +53,16 @@ public class StartController {
     public void onExitButton(ActionEvent event) {
         mainStage.close();
     }
+
+    public void onLinkToVideo(ActionEvent event) {
+        Application app = new Application() {
+            @Override
+            public void start(Stage stage) {
+            }
+        };
+        HostServices services = app.getHostServices();
+        services.showDocument(linkToVideoStr);
+    }
+
 
 }

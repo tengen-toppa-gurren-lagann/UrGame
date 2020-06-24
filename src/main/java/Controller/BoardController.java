@@ -52,7 +52,7 @@ public class BoardController {
     }
 
     // Текущая фаза игры:
-    private Integer curPhase = 0;   // 0 - Ход белых, бросок кубика
+    private int curPhase = 0;   // 0 - Ход белых, бросок кубика
     // 1 - Ход белых, выбор фишки
     // 2 - Ход белых, выбор поля
     // 3 - Ход белых, поле выбрано: фишка перемещена, ход сделан (промежуточная фаза)
@@ -105,10 +105,10 @@ public class BoardController {
     }
 
     public void drawBoard() { // Отрисовка доски
-        whiteChipsOnHandCnt.setText(board.getWhitesOnHandCnt().toString());
-        blackChipsOnHandCnt.setText(board.getBlacksOnHandCnt().toString());
-        whiteChipsOutCnt.setText(board.getWhitesOutCnt().toString());
-        blackChipsOutCnt.setText(board.getBlacksOutCnt().toString());
+        whiteChipsOnHandCnt.setText(board.getChipsOnHandCnt(ChipColor.WHITE).toString());
+        blackChipsOnHandCnt.setText(board.getChipsOnHandCnt(ChipColor.BLACK).toString());
+        whiteChipsOutCnt.setText(board.getChipsOutCnt(ChipColor.WHITE).toString());
+        blackChipsOutCnt.setText(board.getChipsOutCnt(ChipColor.BLACK).toString());
         double x = 0.0;
         double y = 0.0;
         for (int i = 0; i < 3; i++) {
@@ -122,7 +122,7 @@ public class BoardController {
                 double bgX = 5;
                 double bgY = 5;
                 double bgSize = cellSize - 10;
-                if (board.getCell(i, j) == UrBoard.CellType.Ordinary) { // Загружаем изображения полей доски
+                if (board.getCell(i, j) == UrBoard.CellType.ORDINARY) { // Загружаем изображения полей доски
                     if (((i == 0) || (i == 2)) && ((j == 1) || (j == 3)) || ((i == 1) && (j == 6))) {
                         Image bgImage = new Image(getClass().getResourceAsStream("/eyes.png"));
                         gc.drawImage(bgImage, bgX, bgY, bgSize, bgSize);
@@ -139,10 +139,10 @@ public class BoardController {
                         Image bgImage = new Image(getClass().getResourceAsStream("/fivedotsinframe.png"));
                         gc.drawImage(bgImage, bgX, bgY, bgSize, bgSize);
                     }
-                } else if (board.getCell(i, j) == UrBoard.CellType.Rosette) {
+                } else if (board.getCell(i, j) == UrBoard.CellType.ROSETTE) {
                     Image bgImage = new Image(getClass().getResourceAsStream("/rosette.png"));
                     gc.drawImage(bgImage, bgX, bgY, bgSize, bgSize);
-                } else if (board.getCell(i, j) == UrBoard.CellType.None) {
+                } else if (board.getCell(i, j) == UrBoard.CellType.NONE) {
                     gc.setStroke(Color.LIGHTGRAY);
                     gc.setFill(Color.LIGHTGRAY);
                     gc.setLineWidth(2);
@@ -153,7 +153,7 @@ public class BoardController {
                 Chip chip=board.getChipByPos(i,j);
                 if (chip!=null) {
                     gc.setLineWidth(4);
-                    if (chip.getColor()== ChipColor.White) {
+                    if (chip.getColor()== ChipColor.WHITE) {
                         gc.setStroke(Color.BLACK);
                         gc.setFill(Color.WHITE);
                     }
@@ -181,7 +181,7 @@ public class BoardController {
                     }
                     if (markCellRow==-2 && markCellCol==-2) { // Фишка выходит с поля - помечаем кнопку вышедших с доски
                         Image img;
-                        if (clickedChip.getColor()==ChipColor.White) {
+                        if (clickedChip.getColor()==ChipColor.WHITE) {
                             img = new Image(getClass().getResourceAsStream("/chip_white_yellow_dot.png"));
                             whiteChipOutBtn.graphicProperty().setValue(new ImageView(img));
                         }
@@ -209,11 +209,11 @@ public class BoardController {
         int phase = curPhase;
         if (phase!=1 && phase!=2 && phase !=5 && phase !=6) return; // На текущем этапе не ожидаем клика по доске
 
-        ChipColor color=ChipColor.White;
-        ChipColor oppositeColor=ChipColor.Black;
+        ChipColor color=ChipColor.WHITE;
+        ChipColor oppositeColor=ChipColor.BLACK;
         if (phase==5 || phase==6) {
-            color=ChipColor.Black;
-            oppositeColor=ChipColor.White;
+            color=ChipColor.BLACK;
+            oppositeColor=ChipColor.WHITE;
         }
         if (phase==1 || phase==5) { // Выбор фишки
             Chip chip = board.getChipByPos(row, col); // Выбрана фишка или поле
@@ -241,23 +241,23 @@ public class BoardController {
         processGame();
     }
 
-    public void onWhiteChipOnHandBtn(ActionEvent event) throws IOException {
+    public void onWhiteChipOnHandBtn(ActionEvent event) {
         if (curPhase == 1 || curPhase == 2) {
-            clickedChip = board.getWhiteChipFromHand();
+            clickedChip = board.getChipFromHand(ChipColor.WHITE);
             if (clickedChip == null) return; // Не осталось фишек на руке)
             processGame();
         }
     }
 
-    public void onBlackChipOnHandBtn(ActionEvent event) throws IOException {
+    public void onBlackChipOnHandBtn(ActionEvent event) {
         if (curPhase == 5 || curPhase == 6) {
-            clickedChip = board.getBlackChipFromHand();
+            clickedChip = board.getChipFromHand(ChipColor.BLACK);
             if (clickedChip == null) return; // Не осталось фишек на руке)
             processGame();
         }
     }
 
-    public void onWhiteChipOutBtn(ActionEvent event) throws IOException {
+    public void onWhiteChipOutBtn(ActionEvent event) {
         if (curPhase == 2) {
             clickedCellRow = -2;
             clickedCellCol = -2;
@@ -265,7 +265,7 @@ public class BoardController {
         }
     }
 
-    public void onBlackChipOutBtn(ActionEvent event) throws IOException {
+    public void onBlackChipOutBtn(ActionEvent event) {
         if (curPhase == 6) {
             clickedCellRow = -2;
             clickedCellCol = -2;
@@ -273,17 +273,17 @@ public class BoardController {
         }
     }
 
-    public void onExitGameButton(ActionEvent event) throws IOException {
+    public void onExitGameButton(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
     }
 
-    public void onRollDiceButton(ActionEvent event) throws IOException {
+    public void onRollDiceButton(ActionEvent event) {
         if (curPhase == 0 || curPhase == 4) { // Кости бросаем только на нужном этапе
-            Integer num = dice.diceRoll();
+            int num = dice.diceRoll();
             board.setDiceNum(num);
-            rollDiceButton.setText("Dices: " + num.toString());
+            rollDiceButton.setText("Dices: " + num);
             processGame();
         }
         else {
@@ -302,7 +302,7 @@ public class BoardController {
                     curPhase=8;
                 }
                 else {
-                    if (board.moveIsPossible(board.getWhiteChips())) { // Ходы есть
+                    if (board.moveIsPossible(board.getChips(ChipColor.WHITE))) { // Ходы есть
                         curPhase=1;
                     }
                     else {
@@ -329,7 +329,7 @@ public class BoardController {
                 if (moveMade) { // Ход сделан
                     rollDiceButton.setText(diceInitStr);
                     try {
-                        if (board.getCell(cellToMakeMoveRow,cellToMakeMoveCol) == UrBoard.CellType.Rosette) { // Перешли на поле-розетку, поэтому нет перехода хода
+                        if (board.getCell(cellToMakeMoveRow,cellToMakeMoveCol) == UrBoard.CellType.ROSETTE) { // Перешли на поле-розетку, поэтому нет перехода хода
                             curPhase=0;
                         }
                         else {
@@ -351,7 +351,7 @@ public class BoardController {
                     curPhase=9;
                 }
                 else {
-                    if (board.moveIsPossible(board.getBlackChips())) { // Ходы есть
+                    if (board.moveIsPossible(board.getChips(ChipColor.BLACK))) { // Ходы есть
                         curPhase=5;
                     }
                     else {
@@ -378,7 +378,7 @@ public class BoardController {
                 if (moveMade) { // Ход сделан
                     rollDiceButton.setText(diceInitStr);
                     try {
-                        if (board.getCell(cellToMakeMoveRow,cellToMakeMoveCol) == UrBoard.CellType.Rosette) { // Перешли на поле-розетку, поэтому нет перехода хода
+                        if (board.getCell(cellToMakeMoveRow,cellToMakeMoveCol) == UrBoard.CellType.ROSETTE) { // Перешли на поле-розетку, поэтому нет перехода хода
                             curPhase=4;
                         }
                         else {
@@ -404,12 +404,12 @@ public class BoardController {
         hintString.setText(hint[curPhase]);
         if (curPhase>=0 && curPhase<4) turnLabel.setText(colorStr[0]);  // Выводим очередность хода
         if (curPhase>=4 && curPhase<8 ) turnLabel.setText(colorStr[1]); // Выводим очередность хода
-        if (board.getWhitesOutCnt()==board.chipsTotalNum) { // Белые выиграли
+        if (board.getChipsOutCnt(ChipColor.WHITE)==board.chipsTotalNum) { // Белые выиграли
             curPhase=10;
             hintString.setText(hint[curPhase]);
             winnerLabel.setText("Whites!");
         }
-        else if (board.getBlacksOutCnt()==board.chipsTotalNum) { // Черные выиграли
+        else if (board.getChipsOutCnt(ChipColor.BLACK)==board.chipsTotalNum) { // Черные выиграли
             curPhase=10;
             hintString.setText(hint[curPhase]);
             winnerLabel.setText("Blacks!");
