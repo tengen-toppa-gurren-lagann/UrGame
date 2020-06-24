@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class UrBoard { // Доска для игры в Ур
     public enum CellType {ORDINARY, ROSETTE, NONE} // Тип поля - обычное, розетка или нет поля (вырез в доске)
 
-    private final int width = 8;  // Количество полей по горизонтали
-    private final int height = 3; // Количество полей по вертикали
+    public static final int width = 8;  // Количество полей по горизонтали
+    public static final int height = 3; // Количество полей по вертикали
     private CellType[][] grid = new CellType[height][width]; // Поля доски
 
     public CellType getCell(int row, int col) {

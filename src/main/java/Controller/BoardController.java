@@ -36,7 +36,7 @@ public class BoardController {
 
     private UrBoard board = new UrBoard();
     private GridPane grid = new GridPane();
-    private static Canvas[][] cellCanvas = new Canvas[3][8];
+    private static Canvas[][] cellCanvas = new Canvas[UrBoard.height][UrBoard.width];
     private static int clickedCellRow;
     private static int clickedCellCol;
     private Chip clickedChip = null;
@@ -86,8 +86,8 @@ public class BoardController {
        grid.add(c, col, row);
     }
     private void fillBoardCells() { // Заполняем доску клетками
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < UrBoard.height; i++) {
+            for (int j = 0; j < UrBoard.width; j++) {
                 cellCanvas[i][j] = new Canvas(cellSize, cellSize);
                 addPane(cellCanvas[i][j], j, i);
             }
@@ -111,8 +111,8 @@ public class BoardController {
         blackChipsOutCnt.setText(board.getChipsOutCnt(ChipColor.BLACK).toString());
         double x = 0.0;
         double y = 0.0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < UrBoard.height; i++) {
+            for (int j = 0; j < UrBoard.width; j++) {
                 GraphicsContext gc = cellCanvas[i][j].getGraphicsContext2D();
                 gc.setStroke(Color.BLACK);
                 gc.setLineWidth(3);

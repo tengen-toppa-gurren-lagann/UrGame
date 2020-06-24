@@ -12,7 +12,7 @@ import java.io.IOException;
 import static javafx.stage.Modality.APPLICATION_MODAL;
 
 public class StartController {
-    private String linkToVideoStr="https://www.youtube.com/watch?v=WZskjLq040I";
+    private final String linkToVideoStr="https://www.youtube.com/watch?v=WZskjLq040I";
 
     private Stage mainStage;
     public void setMainStage(Stage stage) {
