@@ -46,9 +46,14 @@ public class BoardController {
     private Dice dice = new Dice(); // "Кубик"
     private final String diceInitStr = "Roll Dices";
 
+    private int gameMode; // Режим игры: 1 - однопользовательский режим, 2 - режим игры на двоих
+    public void setGameMode(int mode) {
+        gameMode = mode;
+    }
+
     private Stage boardStage;
     public void setBoardStage(Stage stage) {
-        this.boardStage = stage;
+        boardStage = stage;
     }
 
     // Текущая фаза игры:
@@ -74,7 +79,19 @@ public class BoardController {
             "Blacks: Turn made",
             "Whites: No moves available. Turn is passing to Blacks, press 'Dices' button please",
             "Blacks: No moves available. Turn is passing to Whites, press 'Dices' button please",
-            "Game over! Press 'Exit' button"};
+            "Game over! Press 'Exit' button",
+            "Your turn: Roll the dices",
+            "Your turn: Click the Chip to move",
+            "Your turn: Click board cell to make move or click another Chip to move",
+            "Your turn made",
+            "Putin's turn: Roll the dices",
+            "Putin's turn: Click the Chip to move",
+            "Putin's turn: Click board cell to make move or click another Chip to move",
+            "Putin's turn made",
+            "You have no moves available. Turn is passing to Putin, press 'Dices' button please",
+            "Putin has no moves available (for now). Turn is passing to you, press 'Dices' button please",
+            "Putin always wins!"
+            };
     private final String[] colorStr = {"Whites", "Blacks"};
 
     private void addPane(Canvas c, int col, int row) { // Добавить в клетку холст вместе с обработчиком мыши
@@ -100,7 +117,9 @@ public class BoardController {
         boardPane.getChildren().add(grid);
         curPhase=0;
         drawBoard();
-        hintString.setText(hint[curPhase]);
+        if (gameMode == 2) {
+            hintString.setText(hint[curPhase]);
+        } else hintString.setText(hint[curPhase + 11]);
         winnerLabel.setText("");
     }
 
@@ -401,17 +420,23 @@ public class BoardController {
             case 10: // Игра окончена
                 break;
         }
-        hintString.setText(hint[curPhase]);
+        if (gameMode == 2) {
+            hintString.setText(hint[curPhase]);
+        } else hintString.setText(hint[curPhase + 11]);
         if (curPhase>=0 && curPhase<4) turnLabel.setText(colorStr[0]);  // Выводим очередность хода
         if (curPhase>=4 && curPhase<8 ) turnLabel.setText(colorStr[1]); // Выводим очередность хода
         if (board.getChipsOutCnt(ChipColor.WHITE)==board.chipsTotalNum) { // Белые выиграли
             curPhase=10;
-            hintString.setText(hint[curPhase]);
+            if (gameMode == 2) {
+                hintString.setText(hint[curPhase]);
+            } else hintString.setText(hint[curPhase + 11]);
             winnerLabel.setText("Whites!");
         }
         else if (board.getChipsOutCnt(ChipColor.BLACK)==board.chipsTotalNum) { // Черные выиграли
             curPhase=10;
-            hintString.setText(hint[curPhase]);
+            if (gameMode == 2) {
+                hintString.setText(hint[curPhase]);
+            } else hintString.setText(hint[curPhase + 11]);
             winnerLabel.setText("Blacks!");
         }
     }

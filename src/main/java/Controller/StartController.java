@@ -19,11 +19,20 @@ public class StartController {
         this.mainStage = stage;
     }
 
+    private int gameMode = 1; // 1 - однопользовательский режим, 2 - режим игры на двоих
+
+    public void onOnePlayerButton(ActionEvent event) {
+        gameMode = 1;
+    }
+    public void onTwoPlayersButton(ActionEvent event) {
+        gameMode = 2;
+    }
     public void onStartButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/board.fxml"));
         Parent root = loader.load();
         BoardController controller = loader.getController();
+        controller.setGameMode(gameMode);
         Stage boardStage = new Stage();
         boardStage.setTitle("Game Board");
         boardStage.setResizable(false);

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -10,14 +12,20 @@
    <children>
       <AnchorPane prefHeight="245.0" prefWidth="311.0">
          <children>
-            <Button fx:id="rulesButton" layoutX="33.0" layoutY="166.0" mnemonicParsing="false" onAction="#onRulesButton" text="Rules" />
-            <Button fx:id="startButton" layoutX="133.0" layoutY="166.0" mnemonicParsing="false" onAction="#onStartButton" text="Start" />
-            <Text layoutX="33.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Royal Game of Ur" wrappingWidth="241.681640625" AnchorPane.leftAnchor="33.0">
+            <Button fx:id="rulesButton" layoutX="33.0" layoutY="186.0" mnemonicParsing="false" onAction="#onRulesButton" text="Rules" />
+            <Button fx:id="startButton" layoutX="133.0" layoutY="186.0" mnemonicParsing="false" onAction="#onStartButton" text="Start" />
+            <Text layoutX="33.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Royal Game of Ur" wrappingWidth="241.681640625" AnchorPane.leftAnchor="33.0">
                <font>
                   <Font name="Book Antiqua" size="24.0" />
                </font>
             </Text>
-            <Button fx:id="exitButton" layoutX="237.0" layoutY="166.0" mnemonicParsing="false" onAction="#onExitButton" text="Exit" />
+            <Button fx:id="exitButton" layoutX="237.0" layoutY="186.0" mnemonicParsing="false" onAction="#onExitButton" text="Exit" />
+            <RadioButton fx:id="onePlayerButton" layoutX="115.0" layoutY="82.0" mnemonicParsing="false" onAction="#onOnePlayerButton" selected="true" text="1 Player">
+               <toggleGroup>
+                  <ToggleGroup fx:id="gameMode" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="twoPlayersButton" layoutX="115.0" layoutY="107.0" mnemonicParsing="false" onAction="#onTwoPlayersButton" text="2 Players" toggleGroup="$gameMode" />
          </children>
       </AnchorPane>
    </children>
