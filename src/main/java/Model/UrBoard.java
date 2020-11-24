@@ -163,7 +163,7 @@ public class UrBoard { // Доска для игры в Ур
 //        moveChipOrCheck(blackChips[1],2, false); // Для проверки перемещения фишки
     }
 
-    private Pair<Integer,Integer> getNewPosition(Chip chip, int n) { // Получить новую позицию при перемещении фишки на n клеток
+    public Pair<Integer,Integer> getNewPosition(Chip chip, int n) { // Получить новую позицию при перемещении фишки на n клеток
         ArrayList<Pair<Integer, Integer>> route;
         if (chip.getColor() == ChipColor.WHITE) {
             route = whitesRoute;

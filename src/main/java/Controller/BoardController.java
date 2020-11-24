@@ -1,9 +1,8 @@
 package Controller;
 
-import Model.Chip;
-import Model.ChipColor;
-import Model.Dice;
-import Model.UrBoard;
+import Model.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -17,8 +16,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class BoardController {
 
@@ -33,6 +38,9 @@ public class BoardController {
     @FXML private Label blackChipsOutCnt;
     @FXML private Button whiteChipOutBtn;
     @FXML private Button blackChipOutBtn;
+    @FXML private Label diceNum;
+    @FXML private Label difficultyLabel;
+    @FXML private Label blackPlayerName;
 
     private UrBoard board = new UrBoard();
     private GridPane grid = new GridPane();
@@ -52,9 +60,19 @@ public class BoardController {
     }
 
     private Stage boardStage;
+    private int difficulty;
     public void setBoardStage(Stage stage) {
         boardStage = stage;
     }
+    public void setDifficulty(int level) { difficulty = level;}
+
+    private UrBot bot;
+
+    private final String noMoveWavFilename = "/no_move.wav";
+    private final String applauseWavFilename = "/applause.wav";
+    private final String blackPlayerStr = gameMode == 1 ? "Robot" : "Human";
+    private final String[] difficultyStr = new String[]{"Easy", "Basic", "Advanced"};
+
 
     // Текущая фаза игры:
     private int curPhase = 0;   // 0 - Ход белых, бросок кубика
@@ -84,13 +102,13 @@ public class BoardController {
             "Your turn: Click the Chip to move",
             "Your turn: Click board cell to make move or click another Chip to move",
             "Your turn made",
-            "Putin's turn: Roll the dices",
-            "Putin's turn: Click the Chip to move",
-            "Putin's turn: Click board cell to make move or click another Chip to move",
-            "Putin's turn made",
-            "You have no moves available. Turn is passing to Putin, press 'Dices' button please",
-            "Putin has no moves available (for now). Turn is passing to you, press 'Dices' button please",
-            "Putin always wins!"
+            "UrBot's turn: Roll the dices",
+            "UrBot's turn: Click the Chip to move",
+            "UrBot's turn: Click board cell to make move or click another Chip to move",
+            "UrBot's turn made",
+            "You have no moves available. Turn is passing to UrBot, press 'Dices' button please",
+            "UrBot has no moves available. Turn is passing to you, press 'Dices' button please",
+            "Game over."
             };
     private final String[] colorStr = {"Whites", "Blacks"};
 
@@ -115,7 +133,15 @@ public class BoardController {
     public void initBoard() { // Инициализация доски
         fillBoardCells();
         boardPane.getChildren().add(grid);
+        blackPlayerName.setText(blackPlayerStr);
+        difficultyLabel.setText(difficultyStr[difficulty - 1]);
         curPhase=0;
+        if (gameMode == 1) {
+            bot = new UrBot(board, ChipColor.BLACK, difficulty);
+            Timeline tl = new Timeline(new KeyFrame(Duration.millis(1250), e -> onTimer()));
+            tl.setCycleCount(Timeline.INDEFINITE);
+            tl.play();
+        }
         drawBoard();
         if (gameMode == 2) {
             hintString.setText(hint[curPhase]);
@@ -227,6 +253,7 @@ public class BoardController {
         if ((row==0 || row==2) && (col==4 || col==5) ) return; // При нажатиях на вырезе доски ничего не делаем ни на каких этапах
         int phase = curPhase;
         if (phase!=1 && phase!=2 && phase !=5 && phase !=6) return; // На текущем этапе не ожидаем клика по доске
+        if (gameMode == 1 && phase != 1 && phase != 2) return;
 
         ChipColor color=ChipColor.WHITE;
         ChipColor oppositeColor=ChipColor.BLACK;
@@ -269,6 +296,7 @@ public class BoardController {
     }
 
     public void onBlackChipOnHandBtn(ActionEvent event) {
+        if (gameMode == 1) return;
         if (curPhase == 5 || curPhase == 6) {
             clickedChip = board.getChipFromHand(ChipColor.BLACK);
             if (clickedChip == null) return; // Не осталось фишек на руке)
@@ -285,6 +313,7 @@ public class BoardController {
     }
 
     public void onBlackChipOutBtn(ActionEvent event) {
+        if (gameMode == 1) return;
         if (curPhase == 6) {
             clickedCellRow = -2;
             clickedCellCol = -2;
@@ -302,7 +331,8 @@ public class BoardController {
         if (curPhase == 0 || curPhase == 4) { // Кости бросаем только на нужном этапе
             int num = dice.diceRoll();
             board.setDiceNum(num);
-            rollDiceButton.setText("Dices: " + num);
+  //          rollDiceButton.setText("Dices: " + num);
+            diceNum.setText("" + num);
             processGame();
         }
         else {
@@ -313,11 +343,26 @@ public class BoardController {
         }
     }
 
+    private void playSound(String soundFileName) {
+        try {
+            InputStream is = getClass().getResourceAsStream(soundFileName);
+            AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(is));
+            Clip clip = AudioSystem.getClip();
+            clip.open(ais);
+            clip.start();
+        }
+        catch (Exception e) {
+            //Empty
+        }
+    }
+
     private void processGame() { // Ведение, смена и обработка этапов игры
         int phase=curPhase;
+        int cellToMakeMoveRow = -1, cellToMakeMoveCol = -1;
         switch (phase) {
             case 0:  // Белые бросили кубик
                 if (board.getDiceNum()==0) { // Выброшен 0 -> переход хода
+                    playSound(noMoveWavFilename);
                     curPhase=8;
                 }
                 else {
@@ -325,6 +370,7 @@ public class BoardController {
                         curPhase=1;
                     }
                     else {
+                        playSound(noMoveWavFilename);
                         curPhase=8; // Ходов нет -> переход хода
                     }
                 }
@@ -339,14 +385,15 @@ public class BoardController {
                 drawBoard();
                 // Обрабатываем ход
                 boolean moveMade=false;
-                int cellToMakeMoveRow = board.getCellForMoveChip(clickedChip).getKey();
-                int cellToMakeMoveCol = board.getCellForMoveChip(clickedChip).getValue();
+                cellToMakeMoveRow = board.getCellForMoveChip(clickedChip).getKey();
+                cellToMakeMoveCol = board.getCellForMoveChip(clickedChip).getValue();
                 if ((cellToMakeMoveRow == clickedCellRow && cellToMakeMoveCol == clickedCellCol)) {
                     board.moveChipOrCheck(clickedChip, board.getDiceNum(), false);
                     moveMade=true;
                 }
                 if (moveMade) { // Ход сделан
                     rollDiceButton.setText(diceInitStr);
+                    diceNum.setText("");
                     try {
                         if (board.getCell(cellToMakeMoveRow,cellToMakeMoveCol) == UrBoard.CellType.ROSETTE) { // Перешли на поле-розетку, поэтому нет перехода хода
                             curPhase=0;
@@ -367,6 +414,7 @@ public class BoardController {
                 break;
             case 4: // Черные бросили кубик
                 if (board.getDiceNum()==0) { // Выброшен 0 -> переход хода
+                    playSound(noMoveWavFilename);
                     curPhase=9;
                 }
                 else {
@@ -374,11 +422,13 @@ public class BoardController {
                         curPhase=5;
                     }
                     else {
+                        playSound(noMoveWavFilename);
                         curPhase=9; // Ходов нет -> переход хода
                     }
                 }
                 break;
             case 5: // Выбрана черная фишка, ждем выбора поля
+                if (gameMode == 1) clickedChip = bot.getMostProfitableChip();
                 drawBoard();
                 if (clickedChip!=null) { // Кликнута именно фишка, а не поле
                     curPhase=6;
@@ -390,12 +440,13 @@ public class BoardController {
                 moveMade=false;
                 cellToMakeMoveRow = board.getCellForMoveChip(clickedChip).getKey();
                 cellToMakeMoveCol = board.getCellForMoveChip(clickedChip).getValue();
-                if ((cellToMakeMoveRow == clickedCellRow && cellToMakeMoveCol == clickedCellCol)) {
+                if (gameMode == 1 || (cellToMakeMoveRow == clickedCellRow && cellToMakeMoveCol == clickedCellCol)) { // Ты робот, либо правильно походил
                     board.moveChipOrCheck(clickedChip, board.getDiceNum(), false);
-                    moveMade=true;
+                    moveMade = true;
                 }
                 if (moveMade) { // Ход сделан
                     rollDiceButton.setText(diceInitStr);
+                    diceNum.setText("");
                     try {
                         if (board.getCell(cellToMakeMoveRow,cellToMakeMoveCol) == UrBoard.CellType.ROSETTE) { // Перешли на поле-розетку, поэтому нет перехода хода
                             curPhase=4;
@@ -431,6 +482,7 @@ public class BoardController {
                 hintString.setText(hint[curPhase]);
             } else hintString.setText(hint[curPhase + 11]);
             winnerLabel.setText("Whites!");
+            playSound(applauseWavFilename);
         }
         else if (board.getChipsOutCnt(ChipColor.BLACK)==board.chipsTotalNum) { // Черные выиграли
             curPhase=10;
@@ -438,6 +490,22 @@ public class BoardController {
                 hintString.setText(hint[curPhase]);
             } else hintString.setText(hint[curPhase + 11]);
             winnerLabel.setText("Blacks!");
+            playSound(applauseWavFilename);
+        }
+    }
+
+    void onTimer() {
+        if (curPhase == 5 || curPhase == 6) {
+            processGame();
+        }
+        if (curPhase == 4) {
+            onRollDiceButton(null);
+        }
+        if (curPhase == 8) {
+            processGame();
+        }
+        if (curPhase == 9) {
+            onRollDiceButton(null);
         }
     }
 }

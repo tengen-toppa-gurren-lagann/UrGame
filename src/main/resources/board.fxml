@@ -40,26 +40,66 @@
    <right>
       <Pane prefHeight="488.0" prefWidth="161.0" style="-fx-background-color: Silver;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="rollDiceButton" layoutX="46.0" layoutY="77.0" mnemonicParsing="false" onAction="#onRollDiceButton" prefHeight="25.0" prefWidth="78.0" text="Roll Dices" textAlignment="CENTER" />
+            <Button fx:id="rollDiceButton" layoutX="37.0" layoutY="223.0" mnemonicParsing="false" onAction="#onRollDiceButton" prefHeight="25.0" prefWidth="78.0" text="Roll Dices" textAlignment="CENTER" />
             <Button fx:id="exitGameButton" layoutX="48.0" layoutY="442.0" mnemonicParsing="false" onAction="#onExitGameButton" prefHeight="25.0" prefWidth="75.0" text="Exit" textAlignment="CENTER" />
-            <Text layoutX="25.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-underline: true;" text="Turn:" wrappingWidth="50.13671875">
+            <Text layoutX="25.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Turn:" wrappingWidth="50.13671875">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
-            <Label fx:id="turnLabel" layoutX="79.0" layoutY="16.0" prefHeight="27.0" prefWidth="58.0" text="Whites">
+            <Label fx:id="turnLabel" layoutX="79.0" layoutY="146.0" prefHeight="27.0" prefWidth="58.0" text="Whites" underline="true">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Text layoutX="15.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-underline: true;" text="Winner:" wrappingWidth="68.13671875">
+            <Text fx:id="txtWinner" layoutX="13.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Winner:" wrappingWidth="68.13671875">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
-            <Label fx:id="winnerLabel" layoutX="85.0" layoutY="200.0" prefHeight="27.0" prefWidth="66.0" text="Whites">
+            <Label fx:id="winnerLabel" layoutX="83.0" layoutY="297.0" prefHeight="27.0" prefWidth="66.0" text="Whites" underline="true">
                <font>
                   <Font size="18.0" />
+               </font>
+            </Label>
+            <Text layoutX="16.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Whites:" wrappingWidth="62.13671875">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="21.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Blacks:" wrappingWidth="62.13671875">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="16.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level:" wrappingWidth="62.13671875">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+            <Label fx:id="turnLabel1" layoutX="79.0" layoutY="8.0" prefHeight="27.0" prefWidth="58.0" text="Human" underline="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="blackPlayerName" layoutX="79.0" layoutY="34.0" prefHeight="27.0" prefWidth="58.0" text="Robot" underline="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="difficultyLabel" layoutX="67.0" layoutY="79.0" prefHeight="27.0" prefWidth="84.0" text="Advanced" underline="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="32.0" layoutY="187.0" prefHeight="27.0" prefWidth="53.0" style="-fx-background-color: white;" text="Dices:">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="diceNum" alignment="CENTER" layoutX="89.0" layoutY="187.0" prefHeight="27.0" prefWidth="31.0" style="-fx-background-color: white;">
+               <font>
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Label>
          </children>
