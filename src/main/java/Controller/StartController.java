@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -17,6 +18,8 @@ import static javafx.stage.Modality.APPLICATION_MODAL;
 
 public class StartController {
 
+    @FXML private ToggleGroup gameModeGroup;
+    @FXML private ToggleGroup difficultyGroup;
     @FXML private RadioButton easyDifficulty;
     @FXML private RadioButton basicDifficulty;
     @FXML private RadioButton advancedDifficulty;

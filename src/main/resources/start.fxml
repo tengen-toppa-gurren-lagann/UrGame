@@ -22,17 +22,17 @@
             <Button fx:id="exitButton" layoutX="237.0" layoutY="186.0" mnemonicParsing="false" onAction="#onExitButton" text="Exit" />
             <RadioButton fx:id="onePlayerButton" layoutX="48.0" layoutY="81.0" mnemonicParsing="false" onAction="#onOnePlayerButton" selected="true" text="1 Player">
                <toggleGroup>
-                  <ToggleGroup fx:id="gameMode" />
+                  <ToggleGroup fx:id="gameModeGroup" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="twoPlayersButton" layoutX="46.0" layoutY="122.0" mnemonicParsing="false" onAction="#onTwoPlayersButton" text="2 Players" toggleGroup="$gameMode" />
+            <RadioButton fx:id="twoPlayersButton" layoutX="46.0" layoutY="122.0" mnemonicParsing="false" onAction="#onTwoPlayersButton" text="2 Players" toggleGroup="$gameModeGroup" />
             <RadioButton fx:id="easyDifficulty" layoutX="175.0" layoutY="72.0" mnemonicParsing="false" onAction="#onEasyButton" selected="true" text="Easy">
                <toggleGroup>
-                  <ToggleGroup fx:id="difficulty" />
+                  <ToggleGroup fx:id="difficultyGroup" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="basicDifficulty" layoutX="175.0" layoutY="105.0" mnemonicParsing="false" onAction="#onBasicButton" selected="true" text="Basic" toggleGroup="$difficulty" />
-            <RadioButton fx:id="advancedDifficulty" layoutX="175.0" layoutY="139.0" mnemonicParsing="false" onAction="#onAdvancedButton" text="Advanced" toggleGroup="$difficulty" />
+            <RadioButton fx:id="basicDifficulty" layoutX="175.0" layoutY="105.0" mnemonicParsing="false" onAction="#onBasicButton" selected="true" text="Basic" toggleGroup="$difficultyGroup" />
+            <RadioButton fx:id="advancedDifficulty" layoutX="175.0" layoutY="139.0" mnemonicParsing="false" onAction="#onAdvancedButton" text="Advanced" toggleGroup="$difficultyGroup" />
          </children>
       </AnchorPane>
    </children>
