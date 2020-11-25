@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -32,6 +33,8 @@ public class BoardController {
     @FXML private Label hintString;
     @FXML private Label turnLabel;
     @FXML private Label winnerLabel;
+    @FXML private Text difficultyTxt;
+    @FXML private Text winnerTxt;
     @FXML private Label whiteChipsOnHandCnt;
     @FXML private Label blackChipsOnHandCnt;
     @FXML private Label whiteChipsOutCnt;
@@ -70,7 +73,7 @@ public class BoardController {
 
     private final String noMoveWavFilename = "/no_move.wav";
     private final String applauseWavFilename = "/applause.wav";
-    private final String blackPlayerStr = gameMode == 1 ? "Robot" : "Human";
+    private final String[] blackPlayerStr = new String[]{"Robot", "Human"};
     private final String[] difficultyStr = new String[]{"Easy", "Basic", "Advanced"};
 
 
@@ -133,7 +136,7 @@ public class BoardController {
     public void initBoard() { // Инициализация доски
         fillBoardCells();
         boardPane.getChildren().add(grid);
-        blackPlayerName.setText(blackPlayerStr);
+        blackPlayerName.setText(blackPlayerStr[gameMode - 1]);
         difficultyLabel.setText(difficultyStr[difficulty - 1]);
         curPhase=0;
         if (gameMode == 1) {
@@ -142,6 +145,11 @@ public class BoardController {
             tl.setCycleCount(Timeline.INDEFINITE);
             tl.play();
         }
+        else {
+            difficultyTxt.setVisible(false);
+            difficultyLabel.setVisible(false);
+        }
+        winnerTxt.setVisible(false);
         drawBoard();
         if (gameMode == 2) {
             hintString.setText(hint[curPhase]);
@@ -481,6 +489,7 @@ public class BoardController {
             if (gameMode == 2) {
                 hintString.setText(hint[curPhase]);
             } else hintString.setText(hint[curPhase + 11]);
+            winnerTxt.setVisible(true);
             winnerLabel.setText("Whites!");
             playSound(applauseWavFilename);
         }
@@ -489,6 +498,7 @@ public class BoardController {
             if (gameMode == 2) {
                 hintString.setText(hint[curPhase]);
             } else hintString.setText(hint[curPhase + 11]);
+            winnerTxt.setVisible(true);
             winnerLabel.setText("Blacks!");
             playSound(applauseWavFilename);
         }

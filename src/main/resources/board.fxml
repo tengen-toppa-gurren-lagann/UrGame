@@ -52,7 +52,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Text fx:id="txtWinner" layoutX="13.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Winner:" wrappingWidth="68.13671875">
+            <Text fx:id="winnerTxt" layoutX="13.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Winner:" wrappingWidth="68.13671875">
                <font>
                   <Font size="18.0" />
                </font>
@@ -72,7 +72,7 @@
                   <Font size="18.0" />
                </font>
             </Text>
-            <Text layoutX="16.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level:" wrappingWidth="62.13671875">
+            <Text fx:id="difficultyTxt" layoutX="16.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level:" wrappingWidth="62.13671875">
                <font>
                   <Font size="18.0" />
                </font>
