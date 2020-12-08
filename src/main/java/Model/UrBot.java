@@ -7,13 +7,17 @@ import java.util.Random;
 
 public class UrBot {
     private  ChipColor color;
-    private UrBoard board;
-    private  int difficulty;
+    public UrBoard board;
+    private int difficulty;
 
     public UrBot(UrBoard urBoard, ChipColor chipColor, int level) {
         board = urBoard;
         color = chipColor;
         difficulty = level;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
     private double getMoveValue(Chip chip) { //ЦФ

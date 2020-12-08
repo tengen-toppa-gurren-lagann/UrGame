@@ -25,6 +25,7 @@ public class StartController {
     @FXML private RadioButton advancedDifficulty;
 
     private final String linkToVideoStr="https://www.youtube.com/watch?v=WZskjLq040I";
+   // private final String linkToVideoStr="https://www.youtube.com/watch?v=dQw4w9WgXcQ"; шуточка
 
     private Stage mainStage;
     public void setMainStage(Stage stage) {
